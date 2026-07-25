@@ -9,17 +9,14 @@
 </head>
 
 <body class="bg-neutral-900 text-white overflow-x-hidden">
-    <div class="container mx-auto max-w-3xl pb-44">
+    <div class="container mx-auto max-w-3xl pb-44 px-2" id="chatContainer">
         <!-- Messages Area-->
         <!-- User message -->
-         <div class="my-6 bg-neutral-800 p-3 rounded-xl ml-auto max-w-fit">
-            Hello this is user
-         </div>
-           
+         
          <!-- AI Message -->
-          <div class="max-w-fit">
+          <!-- <div class="max-w-fit">
             Hello user, How are you?
-          </div>
+          </div> -->
 
         <!-- Message area ends here -->
 
@@ -28,7 +25,7 @@
             <div class="bg-neutral-800 p-2 rounded-3xl w-full max-w-3xl mb-4">
             <textarea class="w-full resize-none outline-0 p-3" rows="2" id="input"></textarea>
             <div class="flex items-center justify-end">
-                <button class="bg-white text-black px-4 pw-1 rounded-full curser-pointer hover:bg-gray-300">Ask</button>
+                <button id="ask" class="bg-white text-black px-4 pw-1 rounded-full curser-pointer hover:bg-gray-300">Ask</button>
             </div>
         </div>
 
