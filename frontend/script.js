@@ -5,6 +5,10 @@ input.addEventListener('keyup', handleEnter)
 const askBTN = document.querySelector("#ask");
 ask.addEventListener('click', handleEnter);
 
+const loading = document.createElement('div');
+loading.className = 'my-6 max-w-fit px-4 py-3 rounded-2xl animate-pulse text-orange-300';
+loading.textContent = 'Thinking...';
+
 async function generate(text) {
     // Append message to UI
     // Send it to LLM
@@ -16,6 +20,7 @@ async function generate(text) {
     chatContainer?.appendChild(msg);
     input.value = ' ';
 
+    chatContainer.appendChild(loading);
     //Call Server
     const assistantMessage = await callServer(text);
 
@@ -23,6 +28,7 @@ async function generate(text) {
     assistantMsgElement.className = "max-w-fit";
     assistantMsgElement.textContent = assistantMessage;
 
+    chatContainer?.removeChild(loading);
     chatContainer?.appendChild(assistantMsgElement);
 }
 
