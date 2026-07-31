@@ -9,6 +9,8 @@ const groq = new OpenAI({
 
 const MAX_ITERATIONS = 6;
 
+
+
 export async function generate(userMessage) {
     const messages = [
         {
