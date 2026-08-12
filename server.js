@@ -7,6 +7,7 @@ const app = express();
 const port = process.env.PORT || 3001;
 const indexHtml = readFileSync(new URL('./public/index.html', import.meta.url), 'utf8');
 const clientScript = readFileSync(new URL('./public/script.js', import.meta.url), 'utf8');
+const logo = readFileSync(new URL('./public/assets/promptlab-logo.png', import.meta.url));
 
 app.use(cors());
 app.use(express.json());
@@ -18,6 +19,10 @@ app.get('/', (req, res) => {
 
 app.get('/script.js', (req, res) => {
     res.type('js').send(clientScript);
+});
+
+app.get('/assets/promptlab-logo.png', (req, res) => {
+    res.type('png').send(logo);
 });
 
 app.post('/chat', async (req, res) => {

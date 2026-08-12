@@ -6,16 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="PromptLab, Himal's AI portfolio assistant">
     <title>PromptLab</title>
+    <link rel="icon" type="image/png" href="/assets/promptlab-logo.png">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
-<body class="bg-neutral-900 text-white overflow-x-hidden">
-    <div class="container mx-auto max-w-3xl pb-44 px-2" id="chatContainer">
+<body class="bg-neutral-900 text-white overflow-x-hidden min-h-screen">
+    <div class="container mx-auto max-w-3xl pb-44 px-3" id="chatContainer">
+        <header class="flex items-center gap-3 pt-5">
+            <img src="/assets/promptlab-logo.png" alt="PromptLab logo" class="h-12 w-12 object-contain">
+            <div>
+                <h1 class="text-xl font-semibold tracking-tight">PromptLab</h1>
+                <p class="text-sm text-neutral-400">Personal AI Assistance</p>
+            </div>
+        </header>
+
         <!-- Messages Area-->
         <!-- User message -->
 
         <!-- AI Message -->
-        <div class="max-w-fit pt-20">
+        <div class="max-w-fit pt-12">
             👋 Hi! I'm <strong>PromptLab</strong>, Himal's AI Assistant.
             <br><br>
 
@@ -42,12 +51,17 @@
         <!-- Writing Area -->
         <div class="fixed inset-x-0 bottom-0 flex items-center justify-center bg-neutral-900">
             <div class="bg-neutral-800 p-2 rounded-3xl w-full max-w-3xl mb-4">
-                <textarea class="w-full resize-none outline-0 p-3" rows="2" id="input"></textarea>
-                <div class="flex items-center justify-end gap-x-3">
-                    <a href="https://github.com/subedihimal/PromptLab" target="_blank" class="bg-orange-400 rounded-3xl p-1 text-sm ">Source Code</a>
-                    <button id="ask"
-                        class="bg-white text-black px-4 pw-1 rounded-full curser-pointer hover:bg-gray-300">Ask
-                    </button>
+                <textarea class="w-full resize-none outline-0 p-3 overflow-y-hidden" rows="1" id="input"
+                    aria-label="Message PromptLab" placeholder="Ask PromptLab..."></textarea>
+                <div class="flex flex-wrap items-center justify-between gap-3 px-3 pb-1">
+                    <p class="text-xs text-neutral-500">(Shift+Enter) to break line</p>
+                    <div class="flex items-center gap-x-3">
+                        <span id="promptsLeft" class="text-sm text-[#f5f0e6]" aria-live="polite"></span>
+                        <a href="https://github.com/subedihimal/PromptLab" target="_blank" class="bg-orange-400 rounded-3xl p-1 text-sm ">Source Code</a>
+                        <button id="ask"
+                            class="bg-white text-black px-4 pw-1 rounded-full curser-pointer hover:bg-gray-300">Ask
+                        </button>
+                    </div>
                 </div>
             </div>
 
