@@ -23,7 +23,7 @@ loading.textContent = 'Thinking...';
 const HISTORY_KEY = 'chat_history';
 const LIMIT_KEY = 'chat_limit';
 const HISTORY_TTL = 24 * 60 * 60 * 1000; // 24 hours
-const MAX_HISTORY = 8;
+const MAX_HISTORY = 40; // 20 user prompts and 20 assistant replies
 const MAX_MESSAGES_PER_WINDOW = 20;
 
 function scrollToLatest(behavior = 'smooth') {

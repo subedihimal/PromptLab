@@ -26,10 +26,13 @@ app.get('/assets/promptlab-logo.png', (req, res) => {
 });
 
 app.post('/chat', async (req, res) => {
-    const { message } = req.body;
-    console.log(message);
+    const { message, history = [] } = req.body ?? {};
+    if (typeof message !== 'string' || !message.trim()) {
+        return res.status(400).json({ error: 'A message is required.' });
+    }
+
     try {
-        const result = await generate(message);
+        const result = await generate(message.trim(), history);
         res.json({ message: result });
     } catch (err) {
         console.error(err);

@@ -8,10 +8,29 @@ const groq = new OpenAI({
 });
 
 const MAX_ITERATIONS = 6;
+const MAX_CONVERSATION_TURNS = 20;
+const MAX_CONTEXT_MESSAGES = MAX_CONVERSATION_TURNS * 2 - 1;
 
+export async function generate(userMessage, history = []) {
+    const conversationHistory = Array.isArray(history)
+        ? history
+            .filter(message =>
+                (message?.role === 'user' || message?.role === 'assistant') &&
+                typeof message.content === 'string' &&
+                message.content.trim()
+            )
+            .map(message => ({
+                role: message.role,
+                content: message.content.trim(),
+            }))
+        : [];
 
+    const latestMessage = conversationHistory.at(-1);
+    if (latestMessage?.role !== 'user' || latestMessage.content !== userMessage) {
+        conversationHistory.push({ role: 'user', content: userMessage });
+    }
 
-export async function generate(userMessage) {
+    const recentHistory = conversationHistory.slice(-MAX_CONTEXT_MESSAGES);
     const messages = [
         {
             role: "system",
@@ -58,10 +77,7 @@ export async function generate(userMessage) {
                 ## About Himal (context)
                 {{CV_CONTEXT}}`,
         },
-        {
-            role: "user",
-            content: userMessage,
-        },
+        ...recentHistory,
     ];
 
     for (let i = 0; i < MAX_ITERATIONS; i++) {
