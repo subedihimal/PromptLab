@@ -53,13 +53,13 @@
             <div class="bg-neutral-800 p-2 rounded-3xl w-full max-w-3xl mb-4">
                 <textarea class="w-full resize-none outline-0 p-3 overflow-y-hidden" rows="1" id="input"
                     aria-label="Message PromptLab" placeholder="Ask PromptLab..."></textarea>
-                <div class="flex flex-wrap items-center justify-between gap-3 px-3 pb-1">
-                    <p class="text-xs text-neutral-500">(Shift+Enter) to break line</p>
-                    <div class="flex items-center gap-x-3">
-                        <span id="promptsLeft" class="text-sm text-[#f5f0e6]" aria-live="polite"></span>
-                        <a href="https://github.com/subedihimal/PromptLab" target="_blank" class="bg-orange-400 rounded-3xl p-1 text-sm ">Source Code</a>
+                <div class="flex w-full flex-wrap items-center gap-x-2 gap-y-1 px-2 pb-1 sm:gap-x-3 sm:px-3">
+                    <p class="shrink-0 whitespace-nowrap text-[10px] text-neutral-500 sm:text-xs">(Shift+Enter) to break line</p>
+                    <div class="ml-auto flex shrink-0 items-center gap-x-2 whitespace-nowrap sm:gap-x-3">
+                        <span id="promptsLeft" class="text-xs text-[#f5f0e6] sm:text-sm" aria-live="polite"></span>
+                        <a href="https://github.com/subedihimal/PromptLab" target="_blank" class="rounded-3xl bg-orange-400 p-1 text-xs sm:text-sm">Source Code</a>
                         <button id="ask"
-                            class="bg-white text-black px-4 pw-1 rounded-full curser-pointer hover:bg-gray-300">Ask
+                            class="cursor-pointer rounded-full bg-white px-3 py-1 text-sm text-black hover:bg-gray-300 sm:px-4">Ask
                         </button>
                     </div>
                 </div>
