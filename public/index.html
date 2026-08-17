@@ -8,15 +8,35 @@
     <title>PromptLab</title>
     <link rel="icon" type="image/png" href="/assets/promptlab-logo.png">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .markdown-response > :first-child { margin-top: 0; }
+        .markdown-response > :last-child { margin-bottom: 0; }
+        .markdown-response p { margin: 0.5rem 0; }
+        .markdown-response strong { color: #fafafa; font-weight: 700; }
+        .markdown-response ul,
+        .markdown-response ol { margin: 0.5rem 0; padding-left: 1.5rem; }
+        .markdown-response ul { list-style: disc; }
+        .markdown-response ol { list-style: decimal; }
+        .markdown-table-wrap { margin: 0.75rem 0; max-width: 100%; overflow-x: auto; }
+        .markdown-response table { width: 100%; min-width: 28rem; border-collapse: collapse; font-size: 0.875rem; }
+        .markdown-response th,
+        .markdown-response td { border: 1px solid #525252; padding: 0.5rem 0.625rem; text-align: left; vertical-align: top; }
+        .markdown-response th { background: #262626; color: #fafafa; font-weight: 600; }
+        .markdown-response tr:nth-child(even) td { background: rgba(38, 38, 38, 0.45); }
+        .markdown-response code { border-radius: 0.25rem; background: #262626; padding: 0.1rem 0.3rem; color: #fed7aa; }
+        .markdown-response pre { margin: 0.75rem 0; overflow-x: auto; border-radius: 0.5rem; background: #171717; padding: 0.75rem; }
+        .markdown-response pre code { background: transparent; padding: 0; }
+        .markdown-response a { color: #fdba74; text-decoration: underline; text-underline-offset: 2px; }
+    </style>
 </head>
 
 <body class="bg-neutral-900 text-white overflow-x-hidden min-h-screen">
     <div class="container mx-auto max-w-3xl pb-44 px-3" id="chatContainer">
-        <header class="flex items-center gap-3 pt-5">
-            <img src="/assets/promptlab-logo.png" alt="PromptLab logo" class="h-12 w-12 object-contain">
+        <header class="sticky top-0 z-20 -mx-3 flex items-center gap-2 border-b border-white/5 bg-neutral-900/95 px-3 py-2 backdrop-blur-sm">
+            <img src="/assets/promptlab-logo.png" alt="PromptLab logo" class="h-8 w-8 object-contain">
             <div>
-                <h1 class="text-xl font-semibold tracking-tight">PromptLab</h1>
-                <p class="text-sm text-neutral-400">Personal AI Assistance</p>
+                <h1 class="text-sm font-semibold leading-tight tracking-tight">PromptLab</h1>
+                <p class="text-[10px] leading-tight text-neutral-400">Personal AI Assistance</p>
             </div>
         </header>
 
@@ -67,6 +87,8 @@
 
         </div>
 
+        <script src="https://cdn.jsdelivr.net/npm/marked@18.0.7/lib/marked.umd.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.12/dist/purify.min.js"></script>
         <script src="./script.js"></script>
 </body>
 

@@ -114,10 +114,43 @@ function appendUserMessage(text) {
 
 function appendAssistantMessage(text) {
     const el = document.createElement('div');
-    el.className = 'max-w-fit whitespace-pre-wrap';
-    el.textContent = text;
+    el.className = 'markdown-response min-w-0 max-w-full';
+    renderAssistantMarkdown(el, text);
     chatContainer?.appendChild(el);
     scrollToLatest();
+}
+
+function renderAssistantMarkdown(element, text) {
+    if (!window.marked || !window.DOMPurify) {
+        element.classList.add('whitespace-pre-wrap');
+        element.textContent = text;
+        return;
+    }
+
+    const html = window.marked.parse(text, {
+        gfm: true,
+        breaks: true,
+    });
+    element.innerHTML = window.DOMPurify.sanitize(html, {
+        ALLOWED_TAGS: [
+            'p', 'br', 'strong', 'em', 'del', 'blockquote',
+            'ul', 'ol', 'li', 'table', 'thead', 'tbody', 'tr', 'th', 'td',
+            'pre', 'code', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+        ],
+        ALLOWED_ATTR: ['href', 'title'],
+    });
+
+    element.querySelectorAll('table').forEach(table => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'markdown-table-wrap';
+        table.before(wrapper);
+        wrapper.appendChild(table);
+    });
+
+    element.querySelectorAll('a').forEach(link => {
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+    });
 }
 
 function appendSystemNotice(text) {
