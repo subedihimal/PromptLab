@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { readFileSync } from 'node:fs';
-import { generate } from './backend/chatbot.js';
+import { generate, refreshHimalCVCache } from './backend/chatbot.js';
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -23,6 +23,24 @@ app.get('/script.js', (req, res) => {
 
 app.get('/assets/promptlab-logo.png', (req, res) => {
     res.type('png').send(logo);
+});
+
+app.get('/api/refresh-cv-cache', async (req, res) => {
+    if (!process.env.CRON_SECRET) {
+        return res.status(503).json({ error: 'The refresh job is not configured.' });
+    }
+
+    if (req.get('authorization') !== `Bearer ${process.env.CRON_SECRET}`) {
+        return res.status(401).json({ error: 'Unauthorized.' });
+    }
+
+    try {
+        const result = await refreshHimalCVCache();
+        res.json({ refreshed: true, ...result });
+    } catch (err) {
+        console.error('CV cache refresh failed:', err.message);
+        res.status(502).json({ error: 'The CV cache could not be refreshed.' });
+    }
 });
 
 app.post('/chat', async (req, res) => {

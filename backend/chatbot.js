@@ -13,11 +13,23 @@ const MAX_CONTEXT_MESSAGES = MAX_CONVERSATION_TURNS * 2 - 1;
 const HIMAL_CV_URL = 'https://www.himalsubedi.com/cv';
 const HIMAL_CV_DOCUMENT_URL = 'https://www.himalsubedi.com/documents/Himal_Subedi_CV.pdf';
 const HIMAL_PORTFOLIO_URL = 'https://www.himalsubedi.com/';
-const SOURCE_CACHE_VERSION =
-    process.env.VERCEL_DEPLOYMENT_ID ||
-    process.env.VERCEL_GIT_COMMIT_SHA ||
-    process.env.VERCEL_URL ||
-    'local-development';
+
+export async function refreshHimalCVCache() {
+    const result = await getHimalSource(
+        HIMAL_CV_DOCUMENT_URL,
+        HIMAL_CV_URL,
+        { query: "Himal Subedi's current CV" }
+    );
+
+    if (result.error) {
+        throw new Error(result.error);
+    }
+
+    return {
+        source: HIMAL_CV_URL,
+        refreshedAt: new Date().toISOString(),
+    };
+}
 
 export async function generate(userMessage, history = []) {
     const conversationHistory = Array.isArray(history)
@@ -239,7 +251,7 @@ async function getHimalSource(extractUrl, sourceUrl, { query }) {
         const focusedQuery = typeof query === "string" && query.trim()
             ? query.trim()
             : "Relevant information about Himal Subedi";
-        const response = await tvly.extract([withDeploymentVersion(extractUrl)], {
+        const response = await tvly.extract([withDailyCacheVersion(extractUrl)], {
             query: focusedQuery,
             chunksPerSource: 5,
             extractDepth: "advanced",
@@ -268,8 +280,8 @@ async function getHimalSource(extractUrl, sourceUrl, { query }) {
     }
 }
 
-function withDeploymentVersion(url) {
+function withDailyCacheVersion(url) {
     const versionedUrl = new URL(url);
-    versionedUrl.searchParams.set("promptlab_deployment", SOURCE_CACHE_VERSION);
+    versionedUrl.searchParams.set("promptlab_cache_day", new Date().toISOString().slice(0, 10));
     return versionedUrl.toString();
 }

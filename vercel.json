@@ -2,7 +2,14 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
     "server.js": {
-      "includeFiles": "public/**"
+      "includeFiles": "public/**",
+      "maxDuration": 60
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/refresh-cv-cache",
+      "schedule": "0 7 * * *"
+    }
+  ]
 }
