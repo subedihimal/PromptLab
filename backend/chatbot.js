@@ -31,7 +31,97 @@ export async function refreshHimalCVCache() {
     };
 }
 
+export function evaluateArithmeticExpression(input) {
+    const expression = input.trim();
+
+    // Handle only standalone arithmetic. Everything else continues to the AI model.
+    if (
+        !expression ||
+        expression.length > 160 ||
+        !/^[\d\s()+\-*/.]+$/.test(expression)
+    ) {
+        return null;
+    }
+
+    let position = 0;
+
+    const skipWhitespace = () => {
+        while (/\s/.test(expression[position] ?? '')) position += 1;
+    };
+
+    const consume = (character) => {
+        skipWhitespace();
+        if (expression[position] !== character) return false;
+        position += 1;
+        return true;
+    };
+
+    const parsePrimary = () => {
+        skipWhitespace();
+
+        if (consume('(')) {
+            const value = parseExpression();
+            if (!consume(')')) throw new Error('Missing closing parenthesis');
+            return value;
+        }
+
+        const number = expression.slice(position).match(/^(?:\d+(?:\.\d*)?|\.\d+)/);
+        if (!number) throw new Error('Expected a number');
+
+        position += number[0].length;
+        const value = Number(number[0]);
+        if (!Number.isFinite(value)) throw new Error('Invalid number');
+        return value;
+    };
+
+    const parseUnary = () => {
+        if (consume('+')) return parseUnary();
+        if (consume('-')) return -parseUnary();
+        return parsePrimary();
+    };
+
+    const parseTerm = () => {
+        let value = parseUnary();
+
+        while (true) {
+            if (consume('*')) value *= parseUnary();
+            else if (consume('/')) {
+                const divisor = parseUnary();
+                if (divisor === 0) throw new Error('Division by zero');
+                value /= divisor;
+            } else {
+                return value;
+            }
+        }
+    };
+
+    const parseExpression = () => {
+        let value = parseTerm();
+
+        while (true) {
+            if (consume('+')) value += parseTerm();
+            else if (consume('-')) value -= parseTerm();
+            else return value;
+        }
+    };
+
+    try {
+        const result = parseExpression();
+        skipWhitespace();
+
+        if (position !== expression.length || !Number.isFinite(result)) return null;
+
+        const roundedResult = Number(result.toPrecision(12));
+        return String(Object.is(roundedResult, -0) ? 0 : roundedResult);
+    } catch {
+        return null;
+    }
+}
+
 export async function generate(userMessage, history = []) {
+    const arithmeticAnswer = evaluateArithmeticExpression(userMessage);
+    if (arithmeticAnswer !== null) return arithmeticAnswer;
+
     const conversationHistory = Array.isArray(history)
         ? history
             .filter(message =>
